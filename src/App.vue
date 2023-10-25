@@ -1,10 +1,14 @@
 <template>
-  <h1 v-bind=style>Bonjour {{ user.name }}</h1>
-  <div class="countWrapper">
+  <h1 v-bind=style :class="{
+    'switch-color': input.switchColor,
+  }">Bonjour {{ user.name }}</h1>
+  <div class="count-wrapper">
     <h2>count : {{ count }}</h2>
-    <button class="btn" @click="addCount">Add</button>
+    <button class="btn" :class="{
+      'switch-color': input.switchColor,
+    }" @click="input.switchColor = !input.switchColor">Switch</button>
   </div>
-  <article>
+  <article v-if="toggle">
     <h2>Product</h2>
     <p>Name : {{ product.name }}</p>
     <p>Quantity : {{ product.quantity }}</p>
@@ -12,17 +16,40 @@
     <p>Price TTC : {{ getTotalPriceTTC }}</p>
     <p>Last Modification : {{ product.lastModification }}</p>
   </article>
-  <input type="number" v-model.lazy="product.quantity">
+    <input type="number" v-model.lazy="product.quantity">
+  <div>
+    <label for="input">Input texte {{ input.value.length }}</label>
+    <input class="input" name="input" id="input" @focus="input.focus = true" @blur="input.focus = false" type="text" v-model="input.value" v-bind:class="setCheckLengthInput">
+  </div>
+  <p class="user-helper" v-bind:class="setCheckLengthInput">La longeur de la saisie doit être comprise entre 5 et 10 caractères.</p>
+  <button @click="toggle = !toggle">Toggle</button>
+
+
 </template>
 
 <script setup lang="ts">
 import {computed, reactive, ref, watch, watchEffect} from "vue";
 
+  let toggle = ref(true);
   const names = ['John', 'Jane', 'Jack', 'Jill', 'Jerome', 'Jenny', 'Jules', 'Jade', 'Jude', 'Jasmine'];
   const style: object = {
     'class': 'title',
     'id': '124',
   };
+
+  const input = reactive({
+    value: '',
+    focus: false,
+    switchColor: true,
+  })
+
+  const setCheckLengthInput = computed(() => {
+    return {
+      inputOnGoing : computed(() => input.value.length > 0 && input.focus).value,
+      checkInputLength : computed(() => input.value.length > 5 && input.value.length < 10 && input.focus).value,
+      warningInputTooLong : computed(() => input.value.length >= 10 && input.focus).value,
+    }
+  })
 
   const state = reactive({
     user : {
@@ -64,6 +91,7 @@ import {computed, reactive, ref, watch, watchEffect} from "vue";
 
 </script>
 
-<style>
-  @import "src/assets/main.css";
+<style lang="scss">
+  @import "./assets/main.css";
+  @import "./assets/style.scss";
 </style>

@@ -1,5 +1,23 @@
 @import './base.css';
 
+@keyframes wizz {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  75% {
+    transform: translateX(-5px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
 #app {
   max-width: 1280px;
   margin: 0 auto;
@@ -21,13 +39,13 @@ a,
   font-size: 4em;
 }
 
-.countWrapper {
+.count-wrapper {
   display: flex;
   flex-direction: row-reverse;
   justify-content: start;
 }
 
-.countWrapper * {
+.count-wrapper * {
   margin: 0 10px;
 }
 
@@ -37,6 +55,45 @@ a,
   background-color: rgb(106, 90, 205);
   color: white;
   font-weight: bold;
+}
+
+.switch-color {
+  color: lightgreen;
+}
+
+button.switch-color {
+  color: white;
+  background-color: lightgreen;
+}
+
+.input {
+  outline: 0;
+  border: 2px solid black;
+  border-radius: 5px;
+  margin: 0px 10px;
+}
+
+.inputOnGoing {
+  border-color: rgb(106, 90, 205);
+}
+
+.checkInputLength {
+  border-color: lightgreen;
+}
+
+.warningInputTooLong {
+  border-color: red;
+  animation: wizz 0.2s ease-in-out;
+  animation-iteration-count: 3;
+}
+
+.user-helper.checkInputLength {
+  color: lightgreen;
+}
+
+.user-helper.warningInputTooLong {
+  color: red;
+  animation: none;
 }
 
 @media (hover: hover) {
@@ -49,11 +106,5 @@ a,
   body {
     display: flex;
     place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
   }
 }
