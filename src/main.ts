@@ -1,9 +1,16 @@
 import './assets/main.css'
 
 import { createApp } from 'vue'
+import {createRouter, createWebHistory} from "vue-router";
 import App from './App.vue'
-import Button from "primevue/button";
+import {vFocus} from './shared/directives/vFocus';
+import {routes} from "@/routes";
 
+const router = createRouter({
+    history: createWebHistory(),
+    routes,
+});
 const app = createApp(App);
-app.component('Button', Button);
+app.directive('focus', vFocus);
+app.use(router);
 app.mount('#app');
